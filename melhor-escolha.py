@@ -1,13 +1,18 @@
-import heapq
 from grafo_romenia import RomeniaPonderado
 
-def busca_melhor_escolha(grafo, inicio, meta, funcao_avaliacao):
-    fronteira = []
-    heapq.heappush(fronteira, (funcao_avaliacao(inicio), 0, inicio, []))
+def busca_custo_uniforme(grafo, inicio, meta):
+    fronteira = [(0, inicio, [])]  # Inicialmente, a fronteira tem apenas o ponto de partida com custo 0
     visitados = {}
 
     while fronteira:
-        f_valor, custo_atual, nó_atual, caminho = heapq.heappop(fronteira)
+        # Encontra o índice do elemento com o menor custo
+        menor_custo_index = 0
+        for i in range(len(fronteira)):
+            if fronteira[i][0] < fronteira[menor_custo_index][0]:
+                menor_custo_index = i
+
+        # Remove o elemento com o menor custo da fronteira
+        custo_atual, nó_atual, caminho = fronteira.pop(menor_custo_index)
         caminho = caminho + [nó_atual]
 
         if nó_atual == meta:
@@ -21,7 +26,7 @@ def busca_melhor_escolha(grafo, inicio, meta, funcao_avaliacao):
         for vizinho, dados in grafo.G[nó_atual].items():
             custo = dados['weight']
             novo_custo = custo_atual + custo
-            heapq.heappush(fronteira, (funcao_avaliacao(vizinho) + novo_custo, novo_custo, vizinho, caminho))
+            fronteira.append((novo_custo, vizinho, caminho))
 
     return None, float('inf')  # Retorna None se não encontrar caminho
 
@@ -30,11 +35,8 @@ if __name__ == "__main__":
     romenia = RomeniaPonderado()
     romenia.imprimir()
 
-    # Função de avaliação simples (busca de custo uniforme)
-    funcao_avaliacao = lambda no: 0  # ou uma função heurística para A*
-
     # Realizar a busca
-    caminho, custo = busca_melhor_escolha(romenia, "Arad", "Bucharest", funcao_avaliacao)
+    caminho, custo = busca_custo_uniforme(romenia, "Arad", "Bucharest")
 
     if caminho:
         print(f"Caminho encontrado: {' -> '.join(caminho)} com custo total de {custo} km")
