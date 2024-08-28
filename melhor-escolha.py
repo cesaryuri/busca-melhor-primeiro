@@ -4,8 +4,10 @@ def busca_custo_uniforme(grafo, inicio, meta):
     
     fronteira = [[inicio, 0, [inicio]]]
     visitados = {}
+    interacoes = 0
 
     while fronteira:
+        interacoes += 1
         # Encontra o índice do elemento com o menor custo
         menor_custo_index = 0
         for i in range(len(fronteira)):
@@ -17,7 +19,7 @@ def busca_custo_uniforme(grafo, inicio, meta):
         fronteira.pop(menor_custo_index)
 
         if no_atual == meta:
-            return caminho, custo_atual
+            return caminho, custo_atual, interacoes  # Corrigido: Retorna interações aqui
 
         visitados[no_atual] = custo_atual
 
@@ -28,18 +30,20 @@ def busca_custo_uniforme(grafo, inicio, meta):
                 novo_caminho = caminho + [vizinho]
                 fronteira.append([vizinho, novo_custo, novo_caminho])
 
-    return None, float('inf')
+    return None, float('inf'), interacoes  
 
 # Como usar
 if __name__ == "__main__":
     romenia = RomeniaPonderado()
 
-    caminho, custo = busca_custo_uniforme(romenia, "Arad", "Bucharest")
+    caminho, custo, interacoes = busca_custo_uniforme(romenia, "Arad", "Bucharest")
 
     if caminho:
         print("Caminho encontrado:")
         for cidade in caminho:
             print(cidade)
         print(f"Custo total: {custo} km")
+        print(f"Interações necessárias: {interacoes}")  # Agora imprime o número de interações
     else:
         print("Nenhum caminho encontrado")
+        print(f"Interações realizadas: {interacoes}")
