@@ -43,7 +43,7 @@ if __name__ == "__main__":
         for cidade in caminho:
             print(cidade)
         print(f"Custo total: {custo} km")
-        print(f"Interações necessárias: {interacoes}")  # Agora imprime o número de interações
+        print(f"Interações necessárias: {interacoes}")  
     else:
         print("Nenhum caminho encontrado")
         print(f"Interações realizadas: {interacoes}")
