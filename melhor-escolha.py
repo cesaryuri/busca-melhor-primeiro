@@ -8,22 +8,22 @@ def busca_custo_uniforme(grafo, inicio, meta):
 
     while fronteira:
         interacoes += 1
-        # Encontra o índice do elemento com o menor custo
+        
         menor_custo_index = 0
         for i in range(len(fronteira)):
             if fronteira[i][1] < fronteira[menor_custo_index][1]:
                 menor_custo_index = i
 
-        # Remove o elemento com o menor custo da fronteira
+        
         no_atual, custo_atual, caminho = fronteira[menor_custo_index]
         fronteira.pop(menor_custo_index)
 
         if no_atual == meta:
-            return caminho, custo_atual, interacoes  # Corrigido: Retorna interações aqui
+            return caminho, custo_atual, interacoes  
 
         visitados[no_atual] = custo_atual
 
-        # Itera sobre os vizinhos do nó atual
+        
         for vizinho, dados in grafo.G[no_atual].items():
             novo_custo = custo_atual + dados['weight']
             if vizinho not in visitados or novo_custo < visitados[vizinho]:
